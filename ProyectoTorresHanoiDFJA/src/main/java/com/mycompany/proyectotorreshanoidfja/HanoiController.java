@@ -10,7 +10,7 @@ public class HanoiController {
     private PilaDinamica[] torres;
     private int discos;
     private int movimientosRealizados = 0;
-    
+
     public HanoiController(int discos) {
         this.discos = discos;
 
@@ -58,22 +58,30 @@ public class HanoiController {
             //Menu del juego 
             int decision = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el numero 1 si desea jugar" + "\n"
                     + "Ingrese el numero 2 si desea ver los movimientos optimos" + "\n"
-                    + "Ingrese el numero 3 si desea salirse del programa" + "\n"));
-            while (decision < 1 || decision > 3) {
+                    + "Ingrese el numero 3 si desea salirse del programa" + "\n"
+                    + "Ingrese el numero 4 si desea ver los movimientos óptimos de forma secuencial" + "\n"));
+            while (decision < 1 || decision > 4) {
                 decision = Integer.parseInt(JOptionPane.showInputDialog("Número incorrecto" + "\n"
                         + "Ingrese el numero 1 si desea jugar" + "\n"
                         + "Ingrese el numero 2 si desea ver los movimientos optimos" + "\n"
-                        + "Ingrese el numero 3 si desea salirse del programa" + "\n"));
+                        + "Ingrese el numero 3 si desea salirse del programa" + "\n"
+                        + "Ingrese el numero 4 si desea ver los movimientos óptimos de forma secuencial" + "\n"));
             }
             //Metodo para ejecutar el metodo de movimientos optimos
             if (decision == 2) {
-                int movsOptimos = contMovimientosOptimos(discos) - movimientosRealizados; 
+                int movsOptimos = contMovimientosOptimos(discos) - movimientosRealizados;
                 JOptionPane.showMessageDialog(null, "Movimientos optimos restantes: " + movsOptimos);
-                movimientos(); 
+                movimientos();
                 return;
             }
             //Metodo para salirse del programa
             if (decision == 3) {
+                return;
+            }
+            // Opción 4: Mostrar movimientos óptimos de forma secuencial
+            if (decision == 4) {
+                mostrarMovimientosOptimos(discos, 1, 3, 2);
+                movimientos();
                 return;
             }
 
@@ -112,4 +120,13 @@ public class HanoiController {
         }
     }
 
+    private void mostrarMovimientosOptimos(int n, int origen, int destino, int auxiliar) {
+        if (n == 1) {
+            JOptionPane.showMessageDialog(null, "Mover disco 1 de Torre " + origen + " a Torre " + destino);
+            return;
+        }
+        mostrarMovimientosOptimos(n - 1, origen, auxiliar, destino);
+        JOptionPane.showMessageDialog(null, "Mover disco " + n + " de Torre " + origen + " a Torre " + destino);
+        mostrarMovimientosOptimos(n - 1, auxiliar, destino, origen);
+    }
 }
